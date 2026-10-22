@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111110">
+  <meta name="description" content="Panel administrativo de NOIR Barber Studio.">
+  <title>Administración | NOIR Barber Studio</title>
+  <link rel="stylesheet" href="Styles/admin.css">
+  <script src="Scripts/admin.js" defer></script>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="admin-header">
+      <a class="brand" href="index.html" aria-label="Volver a NOIR">
+        NOIR<span>.</span>
+      </a>
+
+      <div class="header-right">
+        <span class="admin-label">
+          <span class="status-dot"></span>
+          <span id="user-role-label">PANEL ADMINISTRATIVO</span>
+        </span>
+        <a class="public-link" href="index.html">Ver página pública</a>
+      </div>
+    </header>
+
+    <main>
+      <!-- INICIO DE SESIÓN -->
+      <section id="login-view" class="login-section">
+        <div class="login-decoration" aria-hidden="true">
+          <span>N.</span>
+        </div>
+        <div class="login-card">
+          <p class="eyebrow">ACCESO RESTRINGIDO</p>
+          <h1>Bienvenido<span>.</span></h1>
+          <p class="muted-text">Inicia sesión para gestionar las reservas de NOIR Barber Studio.</p>
+          <form id="login-form">
+            <div class="form-field">
+              <label for="username">Usuario o Email</label>
+              <input id="username" name="username" type="text" autocomplete="username" placeholder="Diseñador o email@barbero.com" maxlength="100" required>
+            </div>
+            <div class="form-field">
+              <label for="password">Contraseña</label>
+              <input id="password" name="password" type="password" autocomplete="current-password" placeholder="Introduce tu contraseña" maxlength="1024" required>
+            </div>
+            <button id="login-button" class="button button-primary full-width" type="submit">Iniciar sesión</button>
+            <p id="login-message" class="message" role="status" aria-live="polite"></p>
+          </form>
+          <p class="login-footer">Acceso exclusivo para el personal autorizado.</p>
+        </div>
+      </section>
+
+      <!-- PANEL PRINCIPAL -->
+      <section id="dashboard-view" class="dashboard" hidden>
+        <div class="welcome-row">
+          <div class="welcome-text">
+            <p class="eyebrow">CENTRO DE CONTROL</p>
+            <h1 id="welcome-name">Reservas<span>.</span></h1>
+            <p class="muted-text" id="welcome-subtitle">Administra las citas de tu barbería desde un solo lugar.</p>
+          </div>
+          <div class="dashboard-actions">
+            <button id="refresh-button" class="button button-secondary" type="button">Actualizar</button>
+            <button id="logout-button" class="button button-outline" type="button">Cerrar sesión</button>
+          </div>
+        </div>
+
+        <!-- SECCIÓN DE INGRESOS (SÓLO VISIBLE PARA BARBEROS O ADMIN) -->
+        <section id="earnings-section" class="earnings-panel" hidden>
+          <div class="panel-heading">
+            <div class="heading-content">
+              <p class="eyebrow">FINANZAS</p>
+              <h2>Mis Ganancias<span>.</span></h2>
+            </div>
+            <div class="earnings-filters">
+              <select id="earnings-filter" class="filter-select">
+                <option value="today">Hoy</option>
+                <option value="week">Esta Semana</option>
+                <option value="month" selected>Este Mes</option>
+                <option value="all">Todo el tiempo</option>
+              </select>
+            </div>
+          </div>
+          <div class="earnings-content">
+            <div class="earnings-card">
+              <span class="earnings-label">Total Acumulado (Citas Completadas)</span>
+              <strong id="total-earnings">$ 0</strong>
+            </div>
+          </div>
+        </section>
+
+        <!-- INDICADORES GLOBALES (SÓLO PARA ADMIN) -->
+        <div id="admin-stats" class="stats-grid" aria-label="Resumen de reservas">
+          <article class="stat-card">
+            <span class="stat-label">Total</span>
+            <strong id="stat-total">0</strong>
+            <span class="stat-caption">Reservas registradas</span>
+          </article>
+          <article class="stat-card stat-pending">
+            <span class="stat-label">Pendientes</span>
+            <strong id="stat-pending">0</strong>
+            <span class="stat-caption">Esperan aprobación</span>
+          </article>
+          <article class="stat-card stat-approved">
+            <span class="stat-label">Aprobadas</span>
+            <strong id="stat-approved">0</strong>
+            <span class="stat-caption">Citas aceptadas</span>
+          </article>
+          <article class="stat-card">
+            <span class="stat-label">Cerradas</span>
+            <strong id="stat-closed">0</strong>
+            <span class="stat-caption">Rechazadas o canceladas</span>
+          </article>
+        </div>
+
+        <!-- LISTADO DE CITAS -->
+        <section class="bookings-panel">
+          <div class="panel-heading">
+            <div class="heading-content">
+              <p class="eyebrow">GESTIÓN DE CITAS</p>
+              <h2 id="bookings-title">Todas las reservas</h2>
+            </div>
+            <span id="last-updated" class="last-updated">Aún no actualizado</span>
+          </div>
+
+          <div class="toolbar">
+            <div class="form-field search-field">
+              <label for="search-bookings">Buscar</label>
+              <input id="search-bookings" type="search" placeholder="Cliente, teléfono, servicio o barbero">
+            </div>
+            <div class="form-field filter-field">
+              <label for="status-filter">Estado</label>
+              <select id="status-filter">
+                <option value="all">Todos los estados</option>
+                <option value="pending">Pendientes</option>
+                <option value="approved">Aprobadas</option>
+                <option value="completed">Completadas</option>
+                <option value="rejected">Rechazadas</option>
+                <option value="cancelled">Canceladas</option>
+              </select>
+            </div>
+          </div>
+
+          <p id="dashboard-message" class="message" role="status" aria-live="polite"></p>
+
+          <div id="loading-state" class="empty-state">
+            <span class="loading-spinner" aria-hidden="true"></span>
+            <p>Cargando reservas...</p>
+          </div>
+
+          <div id="empty-state" class="empty-state" hidden>
+            <h3>No hay reservas para mostrar</h3>
+            <p>Prueba con otro filtro o actualiza la información.</p>
+          </div>
+
+          <div id="bookings-table-wrap" class="table-wrap" hidden>
+            <table>
+              <thead>
+                <tr>
+                  <th>Cita</th>
+                  <th>Cliente</th>
+                  <th>Servicio</th>
+                  <th class="hide-mobile">Barbero</th>
+                  <th>Estado</th>
+                  <th>Acciones</th>
+                </tr>
+              </thead>
+              <tbody id="bookings-body"></tbody>
+            </table>
+          </div>
+          <p class="table-note">Los cambios de estado se guardan en el servidor.</p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="admin-footer">
+      <p>NOIR<span>.</span> BARBER STUDIO</p>
+      <p>Administración privada</p>
+    </footer>
+  </div>
+
+  <div id="toast" class="toast" role="status" aria-live="polite" hidden></div>
+</body>
+</html>

@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="description"
+    content="Reserva tu cita en NOIR Barber Studio. Elige tu servicio, barbero y horario."
+  >
+  <meta name="theme-color" content="#111110">
+
+  <title>Reservas | NOIR Barber Studio</title>
+
+  <link rel="stylesheet" href="Styles/style.css">
+  <script src="Scripts/script.js" defer></script>
+</head>
+
+<body>
+  <header class="site-header">
+    <a class="brand" href="#inicio" aria-label="NOIR Barber Studio, inicio">
+      NOIR<span>.</span>
+    </a>
+
+    <p class="brand-subtitle">BARBER STUDIO</p>
+
+    <nav class="main-nav" aria-label="Navegación principal">
+      <a href="#servicios">Servicios</a>
+      <a href="#reservar">Reservar</a>
+      <a href="#ubicacion">Ubicación</a>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" id="inicio">
+      <div class="hero-content">
+        <p class="eyebrow">ESTILO · PRECISIÓN · PERSONALIDAD</p>
+        <h1>Tu estilo.<br>Tu momento.</h1>
+
+        <p class="hero-description">
+          Una experiencia de barbería diseñada alrededor de ti.
+          Elige tu servicio, selecciona un horario y solicita tu cita.
+        </p>
+
+        <a class="button button-primary" href="#reservar">
+          Reservar una cita
+        </a>
+      </div>
+
+      <div class="hero-decoration" aria-hidden="true">
+        <span class="decoration-line"></span>
+        <span class="decoration-text">NOIR BARBER STUDIO</span>
+      </div>
+    </section>
+
+    <section class="section services-section" id="servicios">
+      <div class="section-heading">
+        <p class="eyebrow">NUESTROS SERVICIOS</p>
+        <h2>El cuidado está en los detalles.</h2>
+        <p>
+          Consulta los servicios disponibles, sus precios y su duración
+          antes de solicitar tu cita.
+        </p>
+      </div>
+
+      <div id="services-list" class="services-grid">
+        <p class="loading-message">Cargando servicios...</p>
+      </div>
+
+      <p id="services-error" class="notice" role="status"></p>
+    </section>
+
+    <section class="booking-section" id="reservar">
+      <div class="booking-layout">
+        <div class="booking-intro">
+          <p class="eyebrow">RESERVAS</p>
+          <h2>Reserva tu experiencia.</h2>
+
+          <p>
+            Completa los datos para solicitar tu cita. La solicitud
+            quedará pendiente hasta que el negocio la apruebe.
+          </p>
+
+          <div class="booking-note">
+            <span class="note-marker" aria-hidden="true"></span>
+            <div>
+              <h3>Confirmación de la cita</h3>
+              <p>
+                Enviar la solicitud no significa que la cita esté
+                confirmada. Los barberos comprobarán el horario y aceptaran el servicio
+                en cuanto puedan.
+              </p>
+            </div>
+          </div>
+
+          <div class="booking-detail">
+            <span class="detail-label">UBICACIÓN</span>
+            <p>Villamaría, Caldas, Colombia</p>
+            <small>Dirección exacta por configurar.</small>
+          </div>
+        </div>
+
+        <div class="booking-card">
+          <form id="booking-form">
+            <div class="form-heading">
+              <p class="eyebrow">TU PRÓXIMA CITA</p>
+              <h3>Datos de la reserva</h3>
+            </div>
+
+            <div class="form-field">
+              <label for="service">Servicio</label>
+              <select id="service" name="service" required disabled>
+                <option value="">Cargando servicios...</option>
+              </select>
+              <p id="service-details" class="field-hint"></p>
+            </div>
+
+            <div class="form-field">
+              <label for="barber">Barbero</label>
+              <select id="barber" name="barber" required disabled>
+                <option value="">Cargando barberos...</option>
+              </select>
+            </div>
+
+            <div class="form-field">
+              <label for="date">Fecha de la cita</label>
+              <input id="date" name="date" type="date" required>
+            </div>
+
+            <div class="form-field">
+              <label for="time">Hora de la cita</label>
+              <select id="time" name="time" required disabled>
+                <option value="">Primero selecciona servicio, barbero y fecha</option>
+              </select>
+              <p id="availability-hint" class="field-hint" aria-live="polite">
+                Selecciona un servicio, un barbero y una fecha para consultar los horarios.
+              </p>
+            </div>
+
+            <div class="form-field">
+              <label for="customer-name">Nombre completo</label>
+              <input
+                id="customer-name"
+                name="customerName"
+                type="text"
+                autocomplete="name"
+                minlength="2"
+                maxlength="100"
+                placeholder="Tu nombre"
+                required
+              >
+            </div>
+
+            <div class="form-field">
+              <label for="customer-phone">Teléfono de contacto</label>
+              <input
+                id="customer-phone"
+                name="customerPhone"
+                type="tel"
+                autocomplete="tel"
+                minlength="7"
+                maxlength="25"
+                pattern="[+0-9 ()\.\-]{7,25}"
+                placeholder="Tu número de contacto"
+                required
+              >
+            </div>
+
+            <div class="booking-summary" aria-live="polite">
+              <div>
+                <span>Servicio</span>
+                <strong id="summary-service">Sin seleccionar</strong>
+              </div>
+              <div>
+                <span>Duración</span>
+                <strong id="summary-duration">—</strong>
+              </div>
+              <div>
+                <span>Precio</span>
+                <strong id="summary-price">—</strong>
+              </div>
+            </div>
+
+            <button
+              id="submit-button"
+              class="button button-primary submit-button"
+              type="submit"
+              disabled
+            >
+              Solicitar reserva
+            </button>
+
+            <p
+              id="booking-message"
+              class="form-message"
+              role="status"
+              aria-live="polite"
+            ></p>
+
+            <p class="privacy-note">
+              Los datos proporcionados se utilizarán para gestionar
+              la solicitud. Antes de abrir las reservas al público,
+              configura y publica la política de tratamiento de datos
+              personales del negocio.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- Sección Visítanos actualizada -->
+    <section class="section location-section" id="ubicacion">
+      <div class="section-heading">
+        <p class="eyebrow">VISÍTANOS</p>
+        <h2>Tu próxima cita te espera.</h2>
+        <p>
+          Un espacio pensado para quienes valoran el estilo,
+          los detalles y una buena experiencia.
+        </p>
+      </div>
+
+      <div class="location-panel">
+        <div class="location-brand">
+          <span class="location-icon" aria-hidden="true">N.</span>
+          <p class="location-label">NOIR BARBER STUDIO</p>
+        </div>
+
+        <div class="location-details">
+          <div class="location-item">
+            <span class="location-number">01</span>
+
+            <div>
+              <h3>Encuéntranos</h3>
+              <p>Villamaría, Caldas, Colombia</p>
+
+              <a
+                class="location-link"
+                href="https://www.google.com/maps/search/?api=1&query=Villamar%C3%ADa%2C%20Caldas"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Abrir Google Maps
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="location-divider"></div>
+
+          <div class="location-item">
+            <span class="location-number">02</span>
+
+            <div>
+              <h3>Horario de atención</h3>
+              <p>Lunes a viernes</p>
+              <p class="location-highlight">8:00 a. m. – 6:00 p. m.</p>
+            </div>
+          </div>
+
+          <div class="location-divider"></div>
+
+          <div class="location-item">
+            <span class="location-number">03</span>
+
+            <div>
+              <h3>Hablemos</h3>
+              <p>¿Tienes alguna pregunta? Contáctanos por WhatsApp.</p>
+
+              <a
+                class="location-whatsapp"
+                href="https://wa.me/573001231234"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Contactar a NOIR Barber Studio por WhatsApp"
+              >
+                Contactar por WhatsApp
+                <span aria-hidden="true">↗</span>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div class="location-footer">
+          <span class="location-footer-line"></span>
+          <p>ESTILO · PRECISIÓN · PERSONALIDAD</p>
+          <span class="location-footer-line"></span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Pie de página -->
+  <footer class="site-footer">
+    <a href="Index.html" class="brand footer-brand">
+      NOIR<span>.</span>
+    </a>
+
+    <p>BARBER STUDIO</p>
+
+    <a href="admin.html" class="admin-link">
+      Acceso administrativo
+    </a>
+
+    <p class="copyright">
+      &copy; <span id="current-year"></span> NOIR Barber Studio.
+      Todos los derechos reservados.
+    </p>
+  </footer>
+</body>
+</html>
